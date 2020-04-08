@@ -6,6 +6,7 @@ package cmd
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/elastic/cloud-on-k8s/hack/deployer/runner"
 	"github.com/ghodss/yaml"
@@ -13,18 +14,19 @@ import (
 )
 
 func GetCommand() *cobra.Command {
-	var plansFile, configFile *string
+	var configDir, configFile *string
 	var getCommand = &cobra.Command{
 		Use:   "get",
 		Short: "Gets cluster configuration, credentials.",
 	}
-	plansFile, configFile = registerFileFlags(getCommand)
+	configDir, configFile = registerFileFlags(getCommand)
+	plansFile := filepath.Join(*configDir, "plans.yml")
 
 	var getClusterNameCommand = &cobra.Command{
 		Use:   "clusterName",
 		Short: "Gets cluster name as per config.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			plans, runConfig, err := runner.ParseFiles(*plansFile, *configFile)
+			plans, runConfig, err := runner.ParseFiles(plansFile, *configFile)
 			if err != nil {
 				return err
 			}
@@ -43,12 +45,12 @@ func GetCommand() *cobra.Command {
 		Use:   "credentials",
 		Short: "Fetches credentials for the cluster as per config and sets kubectl context to this cluster.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			plans, runConfig, err := runner.ParseFiles(*plansFile, *configFile)
+			plans, runConfig, err := runner.ParseFiles(plansFile, *configFile)
 			if err != nil {
 				return err
 			}
 
-			driver, err := runner.GetDriver(plans.Plans, runConfig)
+			driver, err := runner.GetDriver(*configDir, plans.Plans, runConfig)
 			if err != nil {
 				return err
 			}
@@ -61,7 +63,7 @@ func GetCommand() *cobra.Command {
 		Use:   "config",
 		Short: "Gets entire configuration as per config. Be careful, secrets are included and in plain text.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			plans, runConfig, err := runner.ParseFiles(*plansFile, *configFile)
+			plans, runConfig, err := runner.ParseFiles(plansFile, *configFile)
 			if err != nil {
 				return err
 			}

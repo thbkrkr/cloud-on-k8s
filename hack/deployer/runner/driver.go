@@ -22,7 +22,7 @@ var (
 
 // DriverFactory allows creating a driver
 type DriverFactory interface {
-	Create(Plan) (Driver, error)
+	Create(string, Plan) (Driver, error)
 }
 
 // Driver allows executing a plan
@@ -48,7 +48,7 @@ func GetPlan(plans []Plan, config RunConfig) (Plan, error) {
 }
 
 // GetDriver picks plan based on the run config and returns the appropriate driver
-func GetDriver(plans []Plan, config RunConfig) (Driver, error) {
+func GetDriver(configDir string, plans []Plan, config RunConfig) (Driver, error) {
 	plan, err := GetPlan(plans, config)
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func GetDriver(plans []Plan, config RunConfig) (Driver, error) {
 		return nil, err
 	}
 
-	return driverFactory.Create(plan)
+	return driverFactory.Create(configDir, plan)
 }
 
 func choosePlan(plans []Plan, id string) (Plan, error) {

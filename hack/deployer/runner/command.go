@@ -21,6 +21,7 @@ type Command struct {
 	variables []string
 	stream    bool
 	stderr    bool
+	dir       string
 }
 
 func NewCommand(command string) *Command {
@@ -39,6 +40,11 @@ func (c *Command) WithVariable(name, value string) *Command {
 
 func (c *Command) WithoutStreaming() *Command {
 	c.stream = false
+	return c
+}
+
+func (c *Command) From(dir string) *Command {
+	c.dir = dir
 	return c
 }
 
@@ -98,6 +104,10 @@ func (c *Command) output() (string, error) {
 
 	cmd := exec.Command("/usr/bin/env", "bash", "-c", c.command) // #nosec G204
 	cmd.Env = append(os.Environ(), c.variables...)
+
+	if c.dir != "" {
+		cmd.Dir = c.dir
+	}
 
 	b := bytes.Buffer{}
 	if c.stream {

@@ -71,11 +71,12 @@ type OcpDriverFactory struct {
 }
 
 type OcpDriver struct {
-	plan Plan
-	ctx  map[string]interface{}
+	configDir string
+	plan      Plan
+	ctx       map[string]interface{}
 }
 
-func (gdf *OcpDriverFactory) Create(plan Plan) (Driver, error) {
+func (gdf *OcpDriverFactory) Create(configDir string, plan Plan) (Driver, error) {
 	baseDomain := plan.Ocp.BaseDomain
 
 	// Domains used for the OCP deployment must be
@@ -92,7 +93,8 @@ func (gdf *OcpDriverFactory) Create(plan Plan) (Driver, error) {
 		baseDomain = "eck-ocp.elastic.dev"
 	}
 	return &OcpDriver{
-		plan: plan,
+		configDir: configDir,
+		plan:      plan,
 		ctx: map[string]interface{}{
 			"GCloudProject":              plan.Ocp.GCloudProject,
 			"ClusterName":                plan.ClusterName,

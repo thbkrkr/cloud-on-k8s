@@ -13,7 +13,7 @@ plans:
     localSsdCount: 1
     nodeCountPerZone: 1
     # use kustomize in GKE to remove the NVMe provisioning already taken care of by the platform
-    diskSetup: kubectl apply -k hack/deployer/config/local-disks
+    diskSetup: kubectl apply -k config/local-disks
     gcpScopes: https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
 - id: gke-dev
   operation: create
@@ -29,7 +29,7 @@ plans:
     localSsdCount: 1
     nodeCountPerZone: 1
     # use kustomize in GKE to remove the NVMe provisioning already taken care of by the platform
-    diskSetup: kubectl apply -k hack/deployer/config/local-disks
+    diskSetup: kubectl apply -k config/local-disks
     # gke creates a secondary IP range for all Pods of a cluster
     # gke defaults to a /14 subnet, which allows 262k Pods per cluster, but only 62 subnets to be created
     # /20 allows 4094 subnets, with up to 4094 IPs (Pods) per subnet
@@ -91,7 +91,7 @@ plans:
     region: eu-central-1
     nodeCount: 3
     nodeAMI: static
-    diskSetup: kubectl apply -f hack/deployer/config/local-disks/ssd-provisioner.yaml
+    diskSetup: kubectl apply -f config/local-disks/ssd-provisioner.yaml
 - id: eks-dev
   operation: create
   clusterName: dev
@@ -103,7 +103,7 @@ plans:
     region: eu-west-2
     nodeCount: 3
     nodeAMI: static
-    diskSetup: kubectl apply -f hack/deployer/config/local-disks/ssd-provisioner.yaml
+    diskSetup: kubectl apply -f config/local-disks/ssd-provisioner.yaml
 - id: e2e-monitor
   operation: create
   clusterName: e2e-monitor

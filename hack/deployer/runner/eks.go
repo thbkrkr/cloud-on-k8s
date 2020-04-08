@@ -57,9 +57,10 @@ func init() {
 type EKSDriverFactory struct {
 }
 
-func (e EKSDriverFactory) Create(plan Plan) (Driver, error) {
+func (e EKSDriverFactory) Create(configDir string, plan Plan) (Driver, error) {
 	return &EKSDriver{
-		plan: plan,
+		configDir: configDir,
+		plan:      plan,
 		ctx: map[string]interface{}{
 			"ClusterName":       plan.ClusterName,
 			"Region":            plan.EKS.Region,
@@ -75,9 +76,10 @@ func (e EKSDriverFactory) Create(plan Plan) (Driver, error) {
 var _ DriverFactory = &EKSDriverFactory{}
 
 type EKSDriver struct {
-	plan    Plan
-	cleanUp []func()
-	ctx     map[string]interface{}
+	configDir string
+	plan      Plan
+	cleanUp   []func()
+	ctx       map[string]interface{}
 }
 
 func (e *EKSDriver) newCmd(cmd string) *Command {
@@ -122,7 +124,8 @@ func (e *EKSDriver) Execute() error {
 			if err := createStorageClass(NoProvisioner); err != nil {
 				return err
 			}
-			return NewCommand(e.plan.EKS.DiskSetup).Run()
+			configParentDir := filepath.Join(e.configDir, "..")
+			return NewCommand(e.plan.EKS.DiskSetup).From(configParentDir).Run()
 		}
 		log.Printf("Not creating cluster as it already exists")
 	}

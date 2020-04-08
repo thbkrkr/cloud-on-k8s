@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -39,11 +40,12 @@ type GkeDriverFactory struct {
 }
 
 type GkeDriver struct {
-	plan Plan
-	ctx  map[string]interface{}
+	configDir string
+	plan      Plan
+	ctx       map[string]interface{}
 }
 
-func (gdf *GkeDriverFactory) Create(plan Plan) (Driver, error) {
+func (gdf *GkeDriverFactory) Create(configDir string, plan Plan) (Driver, error) {
 	pvcPrefix := plan.ClusterName
 	if len(pvcPrefix) > pvcPrefixMaxLength {
 		pvcPrefix = pvcPrefix[0:pvcPrefixMaxLength]
@@ -60,7 +62,8 @@ func (gdf *GkeDriverFactory) Create(plan Plan) (Driver, error) {
 	}
 
 	return &GkeDriver{
-		plan: plan,
+		configDir: configDir,
+		plan:      plan,
 		ctx: map[string]interface{}{
 			"GCloudProject":     plan.Gke.GCloudProject,
 			"ClusterName":       plan.ClusterName,
@@ -129,7 +132,8 @@ func (d *GkeDriver) Execute() error {
 }
 
 func (d *GkeDriver) createSsdProvider() error {
-	return NewCommand(d.plan.Gke.DiskSetup).Run()
+	configParentDir := filepath.Join(d.configDir, "..")
+	return NewCommand(d.plan.Gke.DiskSetup).From(configParentDir).Run()
 }
 
 func (d *GkeDriver) auth() error {

@@ -32,12 +32,13 @@ type AksDriverFactory struct {
 }
 
 type AksDriver struct {
+	configDir   string
 	plan        Plan
 	ctx         map[string]interface{}
 	vaultClient *VaultClient
 }
 
-func (gdf *AksDriverFactory) Create(plan Plan) (Driver, error) {
+func (gdf *AksDriverFactory) Create(configDir string, plan Plan) (Driver, error) {
 	var vaultClient *VaultClient
 	if plan.VaultInfo != nil {
 		var err error
@@ -64,7 +65,8 @@ func (gdf *AksDriverFactory) Create(plan Plan) (Driver, error) {
 	}
 
 	return &AksDriver{
-		plan: plan,
+		configDir: configDir,
+		plan:      plan,
 		ctx: map[string]interface{}{
 			"ResourceGroup":     plan.Aks.ResourceGroup,
 			"ClusterName":       plan.ClusterName,
