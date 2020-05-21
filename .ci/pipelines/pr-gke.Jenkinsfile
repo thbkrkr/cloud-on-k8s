@@ -10,6 +10,7 @@ pipeline {
 
     options {
         timeout(time: 45, unit: 'MINUTES')
+        skipDefaultCheckout(true)
     }
 
     environment {
@@ -20,6 +21,10 @@ pipeline {
     }
 
     stages {
+        stage('Checkout and stash source code') {
+            checkout scm
+            stash allowEmpty: true, name: 'source', useDefaultExcludes: false
+        }
         stage('Validate Jenkins pipelines') {
             when {
                 expression {
@@ -45,12 +50,9 @@ pipeline {
                 stage("Run unit and integration tests") {
                     when {
                         expression {
-                            checkout scm
+                            unstash "source"
                             notOnlyDocs()
                         }
-                    }
-                    agent {
-                        label 'linux'
                     }
                     steps {
                         script {
@@ -66,9 +68,12 @@ pipeline {
                 stage("Run smoke E2E tests") {
                     when {
                         expression {
-                            checkout scm
+                            unstash "source"
                             notOnlyDocs()
                         }
+                    }
+                    agent {
+                        label 'linux'
                     }
                     steps {
                         sh '.ci/setenvconfig pr'
