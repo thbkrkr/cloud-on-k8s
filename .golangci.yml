@@ -118,8 +118,6 @@ issues:
     - Deferring unsafe method
     # False positive is triggered by 'src, err := ioutil.ReadFile(filename)'
     - Potential file inclusion via variable
-    # Too many false-positives for parametrized shell calls
-    - Subprocess launched with variable
     # Don't be strict about forcing a comment for everything
     - exported (method|function|const|type|var) .*should have comment .*or be unexported
     - At least one file in a package should have a package comment
