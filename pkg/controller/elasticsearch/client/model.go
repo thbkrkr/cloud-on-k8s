@@ -155,9 +155,9 @@ func (s Shards) GetShardsByNode() map[string]Shards {
 	return result
 }
 
-// Strip extra information from the nodeName field
-// eg. "cluster-node-2 -> 10.56.2.33 8DqGuLtrSNyMfE2EfKNDgg" becomes "cluster-node-2"
-// see https://github.com/elastic/cloud-on-k8s/issues/1796
+// UnmarshalJSON strips extra information from the nodeName field.
+// (e.g. "cluster-node-2 -> 10.56.2.33 8DqGuLtrSNyMfE2EfKNDgg" becomes "cluster-node-2")
+// See https://github.com/elastic/cloud-on-k8s/issues/1796.
 func (s *Shards) UnmarshalJSON(data []byte) error {
 	type Alias Shards
 	aux := (*Alias)(s)
@@ -357,7 +357,7 @@ type LicenseResponse struct {
 	License License `json:"license"`
 }
 
-// StartTrialResponse is the response to the start trial API call.
+// StartBasicResponse is the response to the start trial API call.
 type StartBasicResponse struct {
 	Acknowledged    bool   `json:"acknowledged"`
 	BasicWasStarted bool   `json:"basic_was_started"`
@@ -379,7 +379,7 @@ type RemoteClusters struct {
 	RemoteClusters map[string]RemoteCluster `json:"remote,omitempty"`
 }
 
-// RemoteClusterSeeds is the set of seeds to use in a remote cluster setting.
+// RemoteCluster is the set of seeds to use in a remote cluster setting.
 type RemoteCluster struct {
 	Seeds []string `json:"seeds"`
 }

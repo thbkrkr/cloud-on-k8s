@@ -220,7 +220,7 @@ func getTransportCert(k *test.K8sClient, esNamespace, esName, podName string) (c
 	return
 }
 
-// CheckESPodsRunning checks that all ES pods for the given ES are running
+// CheckESPodsPending checks that all ES pods for the given ES are running
 func CheckESPodsPending(b Builder, k *test.K8sClient) test.Step {
 	return checkESPodsPhase(b, k, corev1.PodPending)
 }

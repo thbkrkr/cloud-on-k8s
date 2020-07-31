@@ -47,7 +47,7 @@ func ReadinessProbeSecretVolume(ent entv1beta1.EnterpriseSearch) volume.SecretVo
 	return volume.NewSecretVolume(name.Config(ent.Name), "readiness-probe", ReadinessProbeMountPath, ReadinessProbeFilename, 0444)
 }
 
-// Reconcile reconciles the configuration of Enterprise Search: it generates the right configuration and
+// ReconcileConfig reconciles the configuration of Enterprise Search: it generates the right configuration and
 // stores it in a secret that is kept up to date.
 // The secret contains 2 entries:
 // - the Enterprise Search configuration file

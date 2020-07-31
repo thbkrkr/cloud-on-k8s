@@ -52,7 +52,7 @@ func New(params Params) appsv1.Deployment {
 	}
 }
 
-// ReconcileDeployment creates or updates the given deployment for the specified owner.
+// Reconcile creates or updates the given deployment for the specified owner.
 func Reconcile(
 	k8sClient k8s.Client,
 	expected appsv1.Deployment,

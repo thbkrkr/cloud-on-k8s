@@ -32,7 +32,7 @@ func ExtractNamespacedName(object metav1.Object) types.NamespacedName {
 	}
 }
 
-// IsAvailable checks if both conditions ContainersReady and PodReady of a Pod are true.
+// IsPodReady checks if both conditions ContainersReady and PodReady of a Pod are true.
 func IsPodReady(pod corev1.Pod) bool {
 	conditionsTrue := 0
 	for _, cond := range pod.Status.Conditions {

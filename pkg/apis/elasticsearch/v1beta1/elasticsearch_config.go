@@ -45,7 +45,7 @@ var DefaultCfg = ElasticsearchSettings{
 	},
 }
 
-// Unpack unpacks Config into a typed subset.
+// UnpackConfig unpacks Config into a typed subset.
 func UnpackConfig(c *v1beta1.Config) (ElasticsearchSettings, error) {
 	esSettings := DefaultCfg // defensive copy
 	if c == nil {

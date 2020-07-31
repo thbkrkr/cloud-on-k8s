@@ -185,14 +185,14 @@ func parseRolesFileContent(data []byte) (RolesFileContent, error) {
 	return parsed, err
 }
 
-// fileBytes returns the file representation of rolesFileContent.
+// FileBytes returns the file representation of rolesFileContent.
 // Since rolesFileContent already corresponds to a deserialized yaml representation of the roles files,
 // we just marshal it back to yaml.
 func (r RolesFileContent) FileBytes() ([]byte, error) {
 	return yaml.Marshal(&r)
 }
 
-// mergeWith merges multiple rolesFileContent, giving priority to other.
+// MergeWith merges multiple rolesFileContent, giving priority to other.
 func (r RolesFileContent) MergeWith(other RolesFileContent) RolesFileContent {
 	for roleName, roleSpec := range other {
 		r[roleName] = roleSpec

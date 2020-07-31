@@ -19,7 +19,7 @@ const (
 	// UUIDCfgMapName is the name for the config map  containing the operator UUID.
 	// The operator UUID is then used in the OperatorInfo.
 	UUIDCfgMapName = "elastic-operator-uuid"
-	// UUIDCfgMapName is used for the operator UUID inside a config map.
+	// UUIDCfgMapKey is used for the operator UUID inside a config map.
 	UUIDCfgMapKey = "uuid"
 )
 

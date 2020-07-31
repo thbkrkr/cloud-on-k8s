@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-// Transport certificates
+// Package transport contains utilities for issuing certificates for the Elastisearch transport networking layer.
 //
 // For each Elasticsearch pod, we issue one certificate from the cluster CA.
 // The certificate and associated private key are passed to the pod through a secret volume mount.

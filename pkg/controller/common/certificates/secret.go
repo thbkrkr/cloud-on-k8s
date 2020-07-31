@@ -27,7 +27,6 @@ const (
 	certsPublicSecretName   = "certs-public"
 	certsInternalSecretName = "certs-internal"
 
-	// http certs volume
 	HTTPCertificatesSecretVolumeName      = "elastic-internal-http-certificates"
 	HTTPCertificatesSecretVolumeMountPath = "/mnt/elastic-internal/http-certs" //nolint:gosec
 )

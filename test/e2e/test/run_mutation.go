@@ -73,7 +73,7 @@ func RunMutationsWhileWatching(t *testing.T, creationBuilders []Builder, mutatio
 	steps.RunSequential(t)
 }
 
-// RunMutations tests one resource change on a given resource.
+// RunMutation tests one resource change on a given resource.
 func RunMutation(t *testing.T, toCreate Builder, mutateTo Builder) {
 	RunMutations(t, []Builder{toCreate}, []Builder{mutateTo})
 }

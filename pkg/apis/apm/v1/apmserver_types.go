@@ -123,7 +123,7 @@ func (as *ApmServer) GetAssociations() []commonv1.Association {
 	}
 }
 
-// ApmEsAssociation helps to manage the APMServer / Elasticsearch association
+// ApmEsAssociation helps to manage the APM Server / Elasticsearch association
 type ApmEsAssociation struct {
 	*ApmServer
 }
@@ -174,7 +174,7 @@ func (aes *ApmEsAssociation) SetAssociationStatus(status commonv1.AssociationSta
 
 var _ commonv1.Association = &ApmKibanaAssociation{}
 
-// ApmServer / Kibana association helper
+// ApmKibanaAssociation helps to manage the APM Server / Kibana association
 type ApmKibanaAssociation struct {
 	*ApmServer
 }

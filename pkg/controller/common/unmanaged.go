@@ -11,7 +11,6 @@ import (
 )
 
 const (
-	// ManagedAnnotation annotation
 	LegacyPauseAnnoation = "common.k8s.elastic.co/pause"
 	ManagedAnnotation    = "eck.k8s.elastic.co/managed"
 )

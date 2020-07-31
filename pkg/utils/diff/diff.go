@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-// package diff contains utils to diff two objects. it's pretty much a vendored version of testify's diff with an
+// Package diff contains utils to diff two objects. it's pretty much a vendored version of testify's diff with an
 // utility function to build the diff.
 package diff
 
@@ -25,7 +25,7 @@ func (t *testifyAdapter) ErrOrNil() error {
 	return errors.NewAggregate(t.errs)
 }
 
-// NewDiff returns the difference between two objects, suitable for debugging.
+// NewDiffAsError returns the difference between two objects, suitable for debugging.
 func NewDiffAsError(expected, actual interface{}) error {
 	adapter := &testifyAdapter{}
 	assert.Equal(adapter, expected, actual)

@@ -120,7 +120,7 @@ func (v *Version) IsSameOrAfter(other Version) bool {
 	return v.IsSame(other) || v.IsAfter(other)
 }
 
-// IsSameOrAfter returns true if the receiver is the same version as the argument. Labels are ignored.
+// IsSame returns true if the receiver is the same version as the argument. Labels are ignored.
 func (v *Version) IsSame(other Version) bool {
 	return v.Major == other.Major && v.Minor == other.Minor && v.Patch == other.Patch
 }

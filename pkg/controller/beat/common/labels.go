@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	// Type represents the Beat type.
+	// TypeLabelValue represents the Beat type.
 	TypeLabelValue = "beat"
 
 	// NameLabelName is used to represent a Beat in k8s resources.

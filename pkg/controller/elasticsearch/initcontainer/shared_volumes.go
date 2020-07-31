@@ -36,7 +36,7 @@ func (v SharedVolume) Volume() corev1.Volume {
 	}
 }
 
-// SharedVolumes represents a list of SharedVolume
+// SharedVolumeArray represents a list of SharedVolume
 type SharedVolumeArray struct {
 	Array []SharedVolume
 }

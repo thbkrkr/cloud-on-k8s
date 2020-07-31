@@ -129,7 +129,7 @@ type APIError struct {
 	response *http.Response
 }
 
-// Error() implements the error interface.
+// Error implements the error interface.
 func (e *APIError) Error() string {
 	defer e.response.Body.Close()
 	reason := "unknown"
