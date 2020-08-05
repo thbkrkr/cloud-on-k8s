@@ -243,11 +243,6 @@ else
 		--set=config.managedNamespaces="{$(MANAGED_NAMESPACES)}" > $(ALL_IN_ONE_OUTPUT_FILE)
 endif
 
-# Deploy an all in one operator against the current k8s cluster
-deploy-all-in-one: GO_TAGS ?= release
-deploy-all-in-one: docker-build docker-push
-	kubectl apply -f $(ALL_IN_ONE_OUTPUT_FILE)
-
 logs-operator:
 	@ kubectl --namespace=$(OPERATOR_NAMESPACE) logs -f statefulset.apps/$(OPERATOR_NAME)
 
