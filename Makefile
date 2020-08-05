@@ -68,7 +68,7 @@ PSP ?= 0
 ##  --       Development       --  ##
 #####################################
 
-all: dependencies golint check-license-header unit integration e2e-compile elastic-operator reattach-pv
+all: dependencies golint check-license-header unit integration e2e-compile go-build-operator reattach-pv
 
 ## -- build
 
@@ -116,7 +116,7 @@ generate-notice-file:
 generate-image-dependencies:
 	@hack/licence-detector/generate-image-deps.sh
 
-elastic-operator: generate
+go-build-operator: generate
 	go build -mod=readonly -ldflags "$(GO_LDFLAGS)" -tags='$(GO_TAGS)' -o bin/elastic-operator github.com/elastic/cloud-on-k8s/cmd
 
 reattach-pv:
