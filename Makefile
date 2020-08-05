@@ -68,7 +68,7 @@ PSP ?= 0
 ##  --       Development       --  ##
 #####################################
 
-all: dependencies golint check-license-header unit integration e2e-compile go-build-operator reattach-pv
+all: dependencies golint check-license-header unit integration e2e-compile go-build-operator go-build-reattach-pv
 
 ## -- build
 
@@ -119,7 +119,7 @@ generate-image-dependencies:
 go-build-operator: generate
 	go build -mod=readonly -ldflags "$(GO_LDFLAGS)" -tags='$(GO_TAGS)' -o bin/elastic-operator github.com/elastic/cloud-on-k8s/cmd
 
-reattach-pv:
+go-build-reattach-pv:
 	# just check that reattach-pv still compiles
 	go build -o /dev/null hack/reattach-pv/main.go
 
@@ -426,7 +426,7 @@ e2e-local:
 
 ci-check: check-license-header golint shellcheck generate check-local-changes
 
-ci-test: unit-xml integration-xml docker-build reattach-pv
+ci-test: unit-xml integration-xml docker-build go-build-reattach-pv
 
 setup-e2e: e2e-compile run-deployer install-crds apply-psp e2e-docker-build e2e-docker-push
 
