@@ -21,15 +21,6 @@ LOG_VERBOSITY ?= 1
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 GOBIN := $(or $(shell go env GOBIN 2>/dev/null), $(shell go env GOPATH 2>/dev/null)/bin)
 
-# find or download controller-gen
-controller-gen:
-ifneq ($(shell controller-gen --version 2> /dev/null), Version: v0.2.5)
-	@(cd /tmp; GO111MODULE=on go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.5)
-CONTROLLER_GEN=$(GOBIN)/controller-gen
-else
-CONTROLLER_GEN=$(shell which controller-gen)
-endif
-
 ## -- Docker image
 
 # for dev, suffix image name with current user name
@@ -94,6 +85,15 @@ tidy:
 go-generate:
 	# we use this in pkg/controller/common/license
 	go generate -tags='$(GO_TAGS)' ./pkg/... ./cmd/...
+
+# find or download controller-gen
+controller-gen:
+ifneq ($(shell controller-gen --version 2> /dev/null), Version: v0.2.5)
+	@(cd /tmp; GO111MODULE=on go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.5)
+CONTROLLER_GEN=$(GOBIN)/controller-gen
+else
+CONTROLLER_GEN=$(shell which controller-gen)
+endif
 
 generate-crds: go-generate controller-gen
 	$(CONTROLLER_GEN) webhook object:headerFile=./hack/boilerplate.go.txt paths=./pkg/apis/...
