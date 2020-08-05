@@ -82,7 +82,10 @@ generate: tidy generate-crds generate-api-docs generate-notice-file
 tidy:
 	go mod tidy
 
-go-generate:
+clean:
+	rm -f pkg/controller/common/license/zz_generated.pubkey.go
+
+go-generate: clean
 	# we use this in pkg/controller/common/license
 	go generate -tags='$(GO_TAGS)' ./pkg/... ./cmd/...
 
@@ -116,9 +119,6 @@ generate-image-dependencies:
 elastic-operator: generate
 	go build -mod=readonly -ldflags "$(GO_LDFLAGS)" -tags='$(GO_TAGS)' -o bin/elastic-operator github.com/elastic/cloud-on-k8s/cmd
 
-clean:
-	rm -f pkg/controller/common/license/zz_generated.pubkey.go
-
 reattach-pv:
 	# just check that reattach-pv still compiles
 	go build -o /dev/null hack/reattach-pv/main.go
@@ -132,11 +132,11 @@ unit-xml: clean
 	gotestsum --junitfile unit-tests.xml -- -cover ./pkg/... ./cmd/... $(TEST_OPTS)
 
 integration: GO_TAGS += integration
-integration: clean generate-crds
+integration: generate-crds
 	go test -tags='$(GO_TAGS)' ./pkg/... ./cmd/... -cover $(TEST_OPTS)
 
 integration-xml: GO_TAGS += integration
-integration-xml: clean generate-crds
+integration-xml: generate-crds
 	gotestsum --junitfile integration-tests.xml -- -tags='$(GO_TAGS)' -cover ./pkg/... ./cmd/... $(TEST_OPTS)
 
 golint:
