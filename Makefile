@@ -77,7 +77,7 @@ PSP ?= 0
 ##  --       Development       --  ##
 #####################################
 
-all: dependencies lint check-license-header unit integration e2e-compile elastic-operator reattach-pv
+all: dependencies golint check-license-header unit integration e2e-compile elastic-operator reattach-pv
 
 ## -- build
 
@@ -139,7 +139,7 @@ integration-xml: GO_TAGS += integration
 integration-xml: clean generate-crds
 	gotestsum --junitfile integration-tests.xml -- -tags='$(GO_TAGS)' -cover ./pkg/... ./cmd/... $(TEST_OPTS)
 
-lint:
+golint:
 	golangci-lint run
 
 shellcheck:
@@ -424,7 +424,7 @@ e2e-local:
 ##  --    Continuous integration    --  ##
 ##########################################
 
-ci-check: check-license-header lint shellcheck generate check-local-changes
+ci-check: check-license-header golint shellcheck generate check-local-changes
 
 ci: unit-xml integration-xml docker-build reattach-pv
 
