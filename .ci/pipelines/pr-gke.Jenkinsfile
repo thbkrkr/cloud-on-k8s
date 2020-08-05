@@ -50,7 +50,7 @@ pipeline {
                     }
                     steps {
                         script {
-                            env.SHELL_EXIT_CODE = sh(returnStatus: true, script: 'make -C .ci TARGET=ci ci')
+                            env.SHELL_EXIT_CODE = sh(returnStatus: true, script: 'make -C .ci TARGET=ci-test ci')
 
                             junit "unit-tests.xml"
                             junit "integration-tests.xml"

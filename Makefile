@@ -426,7 +426,7 @@ e2e-local:
 
 ci-check: check-license-header golint shellcheck generate check-local-changes
 
-ci: unit-xml integration-xml docker-build reattach-pv
+ci-test: unit-xml integration-xml docker-build reattach-pv
 
 setup-e2e: e2e-compile run-deployer install-crds apply-psp e2e-docker-build e2e-docker-push
 

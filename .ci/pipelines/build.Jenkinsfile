@@ -31,7 +31,7 @@ pipeline {
                 }
                 stage('Run unit and integration tests') {
                     steps {
-                        sh 'make -C .ci TARGET=ci ci'
+                        sh 'make -C .ci TARGET=ci-test ci'
                     }
                 }
                 stage('Build and push Docker image') {
