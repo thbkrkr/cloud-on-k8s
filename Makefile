@@ -152,12 +152,12 @@ upgrade-test: docker-build docker-push
 ##  --       Run       --  ##
 #############################
 
-install-crds: generate-crds
+apply-crds: generate-crds
 	kubectl apply -f $(ALL_CRDS)
 
 # Run locally against the configured Kubernetes cluster, with port-forwarding enabled so that
 # the operator can reach services running in the cluster through k8s port-forward feature
-run: install-crds go-run
+run: apply-crds go-run
 
 go-run:
 	# Run the operator locally with debug logs and operator image set to latest
@@ -201,7 +201,7 @@ endif
 endif
 
 # Deploy the operator against the current k8s cluster
-deploy: check-gke install-crds build-operator-image apply-operator
+deploy: check-gke apply-crds build-operator-image apply-operator
 
 apply-operator:
 ifeq ($(strip $(MANAGED_NAMESPACES)),)
@@ -254,7 +254,7 @@ show-credentials:
 ##  --    K8s clusters bootstrap    --  ##
 ##########################################
 
-cluster-bootstrap: install-crds
+cluster-bootstrap: apply-crds
 
 clean-k8s-cluster:
 	kubectl delete --ignore-not-found=true  ValidatingWebhookConfiguration validating-webhook-configuration
@@ -428,7 +428,7 @@ ci-check: check-license-header golint shellcheck generate check-local-changes
 
 ci-test: unit-xml integration-xml docker-build go-build-reattach-pv
 
-setup-e2e: e2e-compile run-deployer install-crds apply-psp e2e-docker-build e2e-docker-push
+setup-e2e: e2e-compile run-deployer apply-crds apply-psp e2e-docker-build e2e-docker-push
 
 ci-e2e: E2E_JSON := true
 ci-e2e: setup-e2e e2e-run
@@ -487,7 +487,7 @@ kind-cluster-%: export CLUSTER_NAME = ${KIND_CLUSTER_NAME}
 kind-cluster-%: kind-node-variable-check
 	./hack/kind/kind.sh \
 		--nodes "${*}" \
-		make install-crds
+		make apply-crds
 
 ## Same as above but build and deploy the operator image
 kind-with-operator-%: export NODE_IMAGE = ${KIND_NODE_IMAGE}
@@ -496,7 +496,7 @@ kind-with-operator-%: kind-node-variable-check docker-build
 	./hack/kind/kind.sh \
 		--load-images $(OPERATOR_IMAGE) \
 		--nodes "${*}" \
-		make install-crds apply-operator
+		make apply-crds apply-operator
 
 ## Run all e2e tests in a Kind cluster
 set-kind-e2e-image:
