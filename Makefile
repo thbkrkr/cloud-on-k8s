@@ -223,15 +223,25 @@ endif
 apply-psp:
 	kubectl apply -f config/dev/elastic-psp.yaml
 
-ALL_IN_ONE_OUTPUT_FILE=config/all-in-one.yaml
+ALL_IN_ONE_OUTPUT_FILE = config/all-in-one.yaml
 
 # merge all-in-one crds with operator manifests
 generate-all-in-one:
+ifeq ($(strip $(MANAGED_NAMESPACES)),)
 	@ ./hack/manifest-gen/manifest-gen.sh -g \
 		--set=operator.version=$(IMG_VERSION) \
 		--set=operator.image.repository=$(BASE_IMG) \
 		--set=operator.namespace=$(OPERATOR_NAMESPACE) \
 		--set=operator.name=$(OPERATOR_NAME) > $(ALL_IN_ONE_OUTPUT_FILE)
+else
+	@ ./hack/manifest-gen/manifest-gen.sh -g \
+		--profile=restricted \
+		--set=operator.version=$(IMG_VERSION) \
+		--set=operator.image.repository=$(BASE_IMG) \
+		--set=operator.namespace=$(OPERATOR_NAMESPACE) \
+		--set=operator.name=$(OPERATOR_NAME) \
+		--set=config.managedNamespaces="{$(MANAGED_NAMESPACES)}" > $(ALL_IN_ONE_OUTPUT_FILE)
+endif
 
 # Deploy an all in one operator against the current k8s cluster
 deploy-all-in-one: GO_TAGS ?= release
