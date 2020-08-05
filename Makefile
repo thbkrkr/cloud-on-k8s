@@ -192,14 +192,6 @@ build-operator-image:
 	&& echo "OK: image $(OPERATOR_IMAGE) already published" \
 	|| $(MAKE) docker-build docker-push
 
-# if the current k8s cluster is on GKE, GCLOUD_PROJECT must be set
-check-gke:
-ifneq ($(findstring gke_,$(KUBECTL_CLUSTER)),)
-ifndef GCLOUD_PROJECT
-	$(error GCLOUD_PROJECT not set while GKE detected)
-endif
-endif
-
 # Deploy the operator against the current k8s cluster
 deploy: build-operator-image apply-operator
 
