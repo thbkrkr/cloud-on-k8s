@@ -201,7 +201,7 @@ endif
 endif
 
 # Deploy the operator against the current k8s cluster
-deploy: check-gke apply-crds build-operator-image apply-operator
+deploy: check-gke build-operator-image apply-operator
 
 apply-operator:
 ifeq ($(strip $(MANAGED_NAMESPACES)),)
@@ -506,7 +506,7 @@ kind-with-operator-%: kind-node-variable-check docker-build
 	./hack/kind/kind.sh \
 		--load-images $(OPERATOR_IMAGE) \
 		--nodes "${*}" \
-		make apply-crds apply-operator
+		make apply-operator
 
 ## Run all e2e tests in a Kind cluster
 set-kind-e2e-image:
