@@ -187,13 +187,13 @@ go-debug:
 		--namespaces=$(MANAGED_NAMESPACES) \
 		--manage-webhook-certs=false)
 
-build-operator-image:
+build-push-operator-image:
 	@ docker pull $(OPERATOR_IMAGE) \
 	&& echo "OK: image $(OPERATOR_IMAGE) already published" \
 	|| $(MAKE) docker-build docker-push
 
 # Deploy the operator against the current k8s cluster
-deploy: build-operator-image apply-operator
+deploy: build-push-operator-image apply-operator
 
 apply-psp:
 	kubectl apply -f config/dev/elastic-psp.yaml
@@ -417,12 +417,12 @@ ci-e2e: E2E_JSON := true
 ci-e2e: setup-e2e e2e-run
 
 ci-build-operator-e2e-run: E2E_JSON := true
-ci-build-operator-e2e-run: setup-e2e build-operator-image e2e-run
+ci-build-operator-e2e-run: setup-e2e build-push-operator-image e2e-run
 
 run-deployer: build-deployer
 	./hack/deployer/deployer execute --plans-file hack/deployer/config/plans.yml --config-file deployer-config.yml
 
-ci-release: clean ci-check build-operator-image
+ci-release: clean ci-check build-push-operator-image
 	@ echo $(OPERATOR_IMAGE) was pushed!
 
 ##########################
