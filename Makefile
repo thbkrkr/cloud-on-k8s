@@ -195,9 +195,6 @@ build-push-operator-image:
 # Deploy the operator against the current k8s cluster
 deploy: build-push-operator-image apply-operator
 
-apply-psp:
-	kubectl apply -f config/dev/elastic-psp.yaml
-
 ALL_IN_ONE_OUTPUT_FILE = config/all-in-one.yaml
 
 # merge all-in-one crds with operator manifests
@@ -220,6 +217,9 @@ endif
 
 apply-operator: generate-all-in-one
 	kubectl apply -f $(ALL_IN_ONE_OUTPUT_FILE)
+
+apply-psp:
+	kubectl apply -f config/dev/elastic-psp.yaml
 
 logs-operator:
 	@ kubectl --namespace=$(OPERATOR_NAMESPACE) logs -f statefulset.apps/$(OPERATOR_NAME)
