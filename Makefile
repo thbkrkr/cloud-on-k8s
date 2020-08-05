@@ -201,7 +201,7 @@ endif
 endif
 
 # Deploy the operator against the current k8s cluster
-deploy: check-gke build-operator-image apply-operator
+deploy: build-operator-image apply-operator
 
 apply-operator:
 ifeq ($(strip $(MANAGED_NAMESPACES)),)
